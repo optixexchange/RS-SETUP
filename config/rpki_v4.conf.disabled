@@ -1,0 +1,17 @@
+roa4 table r4;
+
+protocol rpki {
+  roa4 {
+    table r4;
+  };
+  transport tcp;
+  remote RTR_ADDR port RTR_PORT;
+
+  retry keep 90;
+  refresh keep 900;
+  expire keep 172800;
+}
+
+function is_rpki_invalid () {
+  return roa_check(r4, net, bgp_path.last_nonaggregated) = ROA_INVALID;
+}
